@@ -14,9 +14,52 @@ class NewTaskController extends GetxController {
 
   bool get getNewTaskInProgress => _getNewTaskInProgress;
   TaskListModel get taskListModel => _taskListModel;
+
+  // Future<bool> getNewTaskList() async {
+  //   _getNewTaskInProgress = true;
+  //   update();
+  //   try {
+  //     // Make HTTP GET request to fetch tasks from server
+  //     final response = await http.get(Uri.parse(
+  //         'http://testflutter.felixeladi.co.ke/TaskManager/getNewTask.php?username=${loginController.username.value}')); // Use username directly from LoginController
+
+  //     if (response.statusCode == 200) {
+  //       // Parse JSON response
+  //       var jsonData = jsonDecode(response.body);
+  //       var taskResponse = jsonData['tasks'];
+  //       var taskDrip = taskResponse.map((task) => Task.fromJson(task)).toList();
+  //       taskController.updateTaskList(taskDrip);
+
+  //       if (jsonData['success'] == 1) {
+  //         // Parse task data from JSON
+  //         List<Task> tasks = (jsonData['tasks'] as List)
+  //             .map((taskJson) => Task.fromJson(taskJson))
+  //             .toList();
+  //         _taskListModel = TaskListModel(
+  //           status: 'success',
+  //           taskList: tasks,
+  //         );
+  //         _getNewTaskInProgress = false;
+
+  //         update(); // Notify listeners that the state has changed
+  //         return true; // Return true if fetching is successful
+  //       } else {
+  //         print('Error fetching tasks: ${jsonData['error']}');
+  //       }
+  //     } else {
+  //       print('Error fetching tasks: ${response.statusCode}');
+  //     }
+  //   } catch (e) {
+  //     print("Error fetching new tasks: $e");
+  //   } finally {
+  //     _getNewTaskInProgress = false;
+  //     update(); // Notify listeners that the state has changed
+  //   }
+  //   return false; // Return false if fetching fails
+  // }
+
   Future<bool> getNewTaskList() async {
     _getNewTaskInProgress = true;
-    
     http.Response response;
     response = await http.get(Uri.parse(
         'http://testflutter.felixeladi.co.ke/TaskManager/getNewTask.php?username=${loginController.username.value}')); // Use username directly from LoginController
@@ -37,7 +80,7 @@ class NewTaskController extends GetxController {
           status: 'success',
           taskList: tasks,
         );
-        //_getNewTaskInProgress = false;
+        _getNewTaskInProgress = false;
 
         update(); // Notify listeners that the state has changed
         return true; // Return true if fetching is successful
@@ -47,7 +90,6 @@ class NewTaskController extends GetxController {
     } else {
       print('Error fetching tasks: ${response.statusCode}');
     }
-    //_getNewTaskInProgress = false;
 
     return false; // Return false if fetching fails
   }

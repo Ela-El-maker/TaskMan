@@ -1,6 +1,7 @@
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:glassmorphism/glassmorphism.dart';
@@ -41,6 +42,7 @@ class _CompletedScreenState extends State<CompletedScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double _w = MediaQuery.of(context).size.width;
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -80,21 +82,34 @@ class _CompletedScreenState extends State<CompletedScreen> {
                   ),
                 ),
                 child: RefreshIndicator(
-                  child: ListView.builder(
-                      physics: BouncingScrollPhysics(),
-                      itemCount: completedTaskController
-                              .taskListModel.taskList?.length ??
-                          0,
-                      itemBuilder: (context, index) {
-                        return TaskItemCard(
-                          task: completedTaskController
-                              .taskListModel.taskList![index],
-                          onStatusChange: () {
-                            completedTaskController.getCompletedTaskList();
-                          },
-                          showProgress: (inProgress) {},
-                        );
-                      }),
+                  child: AnimationLimiter(
+                    child: ListView.builder(
+                        physics: BouncingScrollPhysics(
+                            parent: AlwaysScrollableScrollPhysics()),
+                        itemCount: completedTaskController
+                                .taskListModel.taskList?.length ??
+                            0,
+                        itemBuilder: (context, index) {
+                          return AnimationConfiguration.staggeredList(
+                            position: index,
+                            delay: Duration(milliseconds: 100),
+                            child: SlideAnimation(
+                              duration: Duration(milliseconds: 2500),
+                              curve: Curves.fastLinearToSlowEaseIn,
+                              verticalOffset: -250,
+                              child: TaskItemCard(
+                                task: completedTaskController
+                                    .taskListModel.taskList![index],
+                                onStatusChange: () {
+                                  completedTaskController
+                                      .getCompletedTaskList();
+                                },
+                                showProgress: (inProgress) {},
+                              ),
+                            ),
+                          );
+                        }),
+                  ),
                   onRefresh: () =>
                       completedTaskController.getCompletedTaskList(),
                 ),

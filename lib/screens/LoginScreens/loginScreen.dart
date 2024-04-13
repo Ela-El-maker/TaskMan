@@ -47,9 +47,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   Center(
                     child: Text('SIGN IN',
                         style: TextStyle(
-                          fontSize: 25,
+                          fontSize: 30,
                           fontWeight: FontWeight.w600,
-                          color: Colors.white,
+                          color: const Color.fromARGB(255, 133, 131, 131),
                         )),
                   ),
                   SizedBox(

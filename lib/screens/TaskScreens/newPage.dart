@@ -86,113 +86,64 @@ class _NewScreenState extends State<NewScreen> {
             //         }),
             //   ),
             // ),
-            // Expanded(
-            //   child: GetBuilder<NewTaskController>(
-            //     builder: (newTaskController) {
-            //       return Visibility(
-            //           visible: newTaskController.getNewTaskInProgress == false,
-            //           replacement: Center(
-            //             child: CircularProgressIndicator(),
-            //           ),
-            //           child:  RefreshIndicator(
-            //                   onRefresh: () =>
-            //                       newTaskController.getNewTaskList(),
-            //                   child: AnimationLimiter(
-            //                     child: ListView.builder(
-            //                       padding: EdgeInsets.all(_w / 20),
-            //                       physics: BouncingScrollPhysics(
-            //                           parent: AlwaysScrollableScrollPhysics()),
-            //                       itemCount: newTaskController
-            //                               .taskListModel.taskList?.length ??
-            //                           0,
-            //                       itemBuilder: (context, index) {
-            //                         return AnimationConfiguration.staggeredList(
-            //                           position: index,
-            //                           delay: Duration(milliseconds: 100),
-            //                           child: SlideAnimation(
-            //                             duration: Duration(milliseconds: 2500),
-            //                             curve: Curves.fastLinearToSlowEaseIn,
-            //                             verticalOffset: -250,
-            //                             child: TaskItemCard(
-            //                                 task: newTaskController
-            //                                     .taskListModel.taskList![index],
-            //                                 onStatusChange: () {
-            //                                   newTaskController
-            //                                       .getNewTaskList();
-            //                                   setState(() {});
-            //                                 },
-            //                                 showProgress: (inProgress) {}),
-            //                           ),
-            //                         );
-            //                       },
-            //                     ),
-
-            //                   ),
-            //                 ));
-            //     },
-            //   ),
-            // ),
-
             Expanded(
               child: GetBuilder<NewTaskController>(
                 builder: (newTaskController) {
                   return Visibility(
-                    visible: newTaskController.getNewTaskInProgress == false,
-                    replacement: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'No tasks found!',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(height: 10),
-                          ElevatedButton(
-                            onPressed: () {
-                              // Handle the action when the button is pressed, like refreshing the tasks list
-                              newTaskController.getNewTaskList();
-                            },
-                            child: Text('Refresh'),
-                          ),
-                        ],
+                      visible: newTaskController.getNewTaskInProgress == false,
+                      replacement: Center(
+                        child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      //CircularProgressIndicator(),
+                      Text(
+                        'No tasks found!',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
                       ),
-                    ),
-                    child: RefreshIndicator(
-                      onRefresh: () => newTaskController.getNewTaskList(),
-                      child: AnimationLimiter(
-                        child: ListView.builder(
-                          padding: EdgeInsets.all(_w / 20),
-                          physics: BouncingScrollPhysics(
-                            parent: AlwaysScrollableScrollPhysics(),
-                          ),
-                          itemCount: newTaskController
-                                  .taskListModel.taskList?.length ??
-                              0,
-                          itemBuilder: (context, index) {
-                            return AnimationConfiguration.staggeredList(
-                              position: index,
-                              delay: Duration(milliseconds: 100),
-                              child: SlideAnimation(
-                                duration: Duration(milliseconds: 2500),
-                                curve: Curves.fastLinearToSlowEaseIn,
-                                verticalOffset: -250,
-                                child: TaskItemCard(
-                                  task: newTaskController
-                                      .taskListModel.taskList![index],
-                                  onStatusChange: () {
-                                    newTaskController.getNewTaskList();
-                                    setState(() {});
-                                  },
-                                  showProgress: (inProgress) {},
+                      SizedBox(height: 10),
+                      ElevatedButton(
+                        onPressed: () {
+                          // Handle the action when the button is pressed, like refreshing the tasks list
+                          newTaskController.getNewTaskList();
+                        },
+                        child: Text('Refresh'),
+                      ),
+                    ],
+                  ),
+                ),
+                      child: RefreshIndicator(
+                        onRefresh: () => newTaskController.getNewTaskList(),
+                        child: AnimationLimiter(
+                          child: ListView.builder(
+                            padding: EdgeInsets.all(_w / 20),
+                            physics: BouncingScrollPhysics(
+                                parent: AlwaysScrollableScrollPhysics()),
+                            itemCount: newTaskController
+                                    .taskListModel.taskList?.length ??
+                                0,
+                            itemBuilder: (context, index) {
+                              return AnimationConfiguration.staggeredList(
+                                position: index,
+                                delay: Duration(milliseconds: 100),
+                                child: SlideAnimation(
+                                  duration: Duration(milliseconds: 2500),
+                                  curve: Curves.fastLinearToSlowEaseIn,
+                                  verticalOffset: -250,
+                                  child: TaskItemCard(
+                                      task: newTaskController
+                                          .taskListModel.taskList![index],
+                                      onStatusChange: () {
+                                        newTaskController.getNewTaskList();
+                                        setState(() {});
+                                      },
+                                      showProgress: (inProgress) {}),
                                 ),
-                              ),
-                            );
-                          },
+                              );
+                            },
+                          ),
                         ),
-                      ),
-                    ),
-                  );
+                      ));
                 },
               ),
             ),

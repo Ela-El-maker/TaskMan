@@ -1,6 +1,7 @@
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:glassmorphism/glassmorphism.dart';
@@ -40,6 +41,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double _w = MediaQuery.of(context).size.width;
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -78,21 +80,35 @@ class _ProgressScreenState extends State<ProgressScreen> {
                   ),
                 ),
                 child: RefreshIndicator(
-                  child: ListView.builder(
-                      physics: BouncingScrollPhysics(),
-                      itemCount: progressTaskController
-                              .taskListModel.taskList?.length ??
-                          0,
-                      itemBuilder: (context, index) {
-                        return TaskItemCard(
-                          task: progressTaskController
-                              .taskListModel.taskList![index],
-                          onStatusChange: () {
-                            progressTaskController.getProgressTaskList();
-                          },
-                          showProgress: (inProgress) {},
-                        );
-                      }),
+                  child: AnimationLimiter(
+                    child: ListView.builder(
+                      padding: EdgeInsets.all(_w / 20),
+                        physics: BouncingScrollPhysics(
+                          parent: AlwaysScrollableScrollPhysics()),
+                        
+                        itemCount: progressTaskController
+                                .taskListModel.taskList?.length ??
+                            0,
+                        itemBuilder: (context, index) {
+                          return AnimationConfiguration.staggeredList(
+                            position: index,
+                                delay: Duration(milliseconds: 100),
+                                child: SlideAnimation(
+                                  duration: Duration(milliseconds: 2500),
+                                  curve: Curves.fastLinearToSlowEaseIn,
+                                  verticalOffset: -250,
+                            child: TaskItemCard(
+                              task: progressTaskController
+                                  .taskListModel.taskList![index],
+                              onStatusChange: () {
+                                progressTaskController.getProgressTaskList();
+                              },
+                              showProgress: (inProgress) {},
+                            ),
+                                ),
+                          );
+                        }),
+                  ),
                   onRefresh: () => progressTaskController.getProgressTaskList(),
                 ),
               );

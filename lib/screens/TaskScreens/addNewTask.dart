@@ -81,205 +81,203 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
           child: Column(
             children: [
               Expanded(
-                child: BodyBackground(
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Form(
-                        key: _formKey,
-                        child: Center(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                height: 32,
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Form(
+                      key: _formKey,
+                      child: Center(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: 32,
+                            ),
+                            Text(
+                              'Add new Task',
+                              //style: Theme.of(context).textTheme.titleLarge,
+                              style: TextStyle(
+                                fontSize: 38,
+                                fontWeight: FontWeight.w800,
+                                color: dark ? Colors.white : Colors.black,
                               ),
-                              Text(
-                                'Add new Task',
-                                //style: Theme.of(context).textTheme.titleLarge,
-                                style: TextStyle(
-                                  fontSize: 38,
-                                  fontWeight: FontWeight.w800,
-                                  color: dark ? Colors.white : Colors.black,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 16,
-                              ),
-                              TextFormField(
-                                controller: _subjectTextEditingController,
-                                decoration:
-                                    InputDecoration(hintText: 'Subject'),
-                                validator: (String? value) {
-                                  if (value?.trim().isEmpty ?? true) {
-                                    return 'Your Subject';
-                                  }
-                                  return null;
-                                },
-                              ),
-                              SizedBox(
-                                height: 8,
-                              ),
-                              TextFormField(
-                                controller: _descriptionTextEditingController,
-                                decoration:
-                                    InputDecoration(hintText: 'Description'),
-                                validator: (String? value) {
-                                  if (value?.trim().isEmpty ?? true) {
-                                    return 'Your Description';
-                                  }
-                                  return null;
-                                },
-                              ),
-                              SizedBox(
-                                height: 8,
-                              ),
-                              InputFieldForm(
-                                hintText:
-                                    DateFormat.yMd().format(_selectedDate),
-                                widget: IconButton(
-                                    onPressed: () {
-                                      _selectTaskDate();
-                                    },
-                                    icon: Icon(
-                                      Icons.calendar_month_sharp,
-                                      size: 45,
-                                    )),
-                              ),
-                              SizedBox(
-                                height: 8,
-                              ),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: InputFieldForm(
-                                      hintText: startTime,
-                                      widget: IconButton(
-                                        onPressed: () {
-                                          _selectTaskTime(isStartTime: true);
-                                        },
-                                        icon: Icon(
-                                          Icons.access_time_sharp,
-                                          size: 30,
-                                        ),
+                            ),
+                            SizedBox(
+                              height: 16,
+                            ),
+                            TextFormField(
+                              controller: _subjectTextEditingController,
+                              decoration:
+                                  InputDecoration(hintText: 'Subject'),
+                              validator: (String? value) {
+                                if (value?.trim().isEmpty ?? true) {
+                                  return 'Your Subject';
+                                }
+                                return null;
+                              },
+                            ),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            TextFormField(
+                              controller: _descriptionTextEditingController,
+                              decoration:
+                                  InputDecoration(hintText: 'Description'),
+                              validator: (String? value) {
+                                if (value?.trim().isEmpty ?? true) {
+                                  return 'Your Description';
+                                }
+                                return null;
+                              },
+                            ),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            InputFieldForm(
+                              hintText:
+                                  DateFormat.yMd().format(_selectedDate),
+                              widget: IconButton(
+                                  onPressed: () {
+                                    _selectTaskDate();
+                                  },
+                                  icon: Icon(
+                                    Icons.calendar_month_sharp,
+                                    size: 45,
+                                  )),
+                            ),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: InputFieldForm(
+                                    hintText: startTime,
+                                    widget: IconButton(
+                                      onPressed: () {
+                                        _selectTaskTime(isStartTime: true);
+                                      },
+                                      icon: Icon(
+                                        Icons.access_time_sharp,
+                                        size: 30,
                                       ),
                                     ),
                                   ),
-                                  SizedBox(
-                                    width: 12,
-                                  ),
-                                  Expanded(
-                                    child: InputFieldForm(
-                                      hintText: endTime,
-                                      widget: IconButton(
-                                        onPressed: () {
-                                          _selectTaskTime(isStartTime: false);
-                                        },
-                                        icon: Icon(
-                                          Icons.access_time_sharp,
-                                          size: 30,
-                                        ),
+                                ),
+                                SizedBox(
+                                  width: 12,
+                                ),
+                                Expanded(
+                                  child: InputFieldForm(
+                                    hintText: endTime,
+                                    widget: IconButton(
+                                      onPressed: () {
+                                        _selectTaskTime(isStartTime: false);
+                                      },
+                                      icon: Icon(
+                                        Icons.access_time_sharp,
+                                        size: 30,
                                       ),
                                     ),
                                   ),
-                                ],
-                              ),
-                              // SizedBox(
-                              //   height: 8,
-                              // ),
-                              // InputFieldForm(
-                              //   hintText: '$_selectedReminder minutes early',
-                              //   widget: DropdownButton<int>(
-                              //     icon: Icon(
-                              //       Icons.keyboard_double_arrow_down_outlined,
-                              //     ),
-                              //     iconSize: 32,
-                              //     elevation: 4,
-                              //     onChanged: (int? value) {
-                              //       setState(() {
-                              //         _selectedReminder = value!;
-                              //       });
-                              //     },
-                              //     items: reminderList
-                              //         .map<DropdownMenuItem<int>>((int value) {
-                              //       return DropdownMenuItem(
-                              //         value: value,
-                              //         child: Text(value.toString()),
-                              //       );
-                              //     }).toList(),
-                              //   ),
-                              // ),
-                              // SizedBox(
-                              //   height: 8,
-                              // ),
-                              // InputFieldForm(
-                              //   hintText: '$_selectedRepeat',
-                              //   widget: DropdownButton<String>(
-                              //     icon: Icon(
-                              //       Icons.keyboard_double_arrow_down_outlined,
-                              //     ),
-                              //     iconSize: 32,
-                              //     elevation: 4,
-                              //     onChanged: (String? value1) {
-                              //       setState(() {
-                              //         _selectedRepeat = value1!;
-                              //       });
-                              //     },
-                              //     items: repeaterList
-                              //         .map<DropdownMenuItem<String>>(
-                              //             (String value) {
-                              //       return DropdownMenuItem(
-                              //         value: value,
-                              //         child: Text(
-                              //           value.toString(),
-                              //         ),
-                              //       );
-                              //     }).toList(),
-                              //     value: _selectedRepeat,
-                              //   ),
-                              // ),
-                              // SizedBox(
-                              //   height: 16,
-                              // ),
-                              Row(
-                                children: [
-                                  colorPallete(),
-                                ],
-                              ),
-                              SizedBox(
-                                width: double.infinity,
-                                child: Visibility(
-                                  visible: _createdTasks == false,
-                                  replacement: Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: ElevatedButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            child: Icon(Icons
-                                                .arrow_back_ios_new_sharp)),
-                                      ),
-                                      SizedBox(
-                                        width: 20,
-                                      ),
-                                      Expanded(
-                                        child: ElevatedButton(
-                                            onPressed: () {
-                                              addTask(); // Access userId from widget.task
-                                            },
-                                            child:
-                                                Icon(Icons.arrow_circle_right)),
-                                      ),
-                                    ],
-                                  ),
+                                ),
+                              ],
+                            ),
+                            // SizedBox(
+                            //   height: 8,
+                            // ),
+                            // InputFieldForm(
+                            //   hintText: '$_selectedReminder minutes early',
+                            //   widget: DropdownButton<int>(
+                            //     icon: Icon(
+                            //       Icons.keyboard_double_arrow_down_outlined,
+                            //     ),
+                            //     iconSize: 32,
+                            //     elevation: 4,
+                            //     onChanged: (int? value) {
+                            //       setState(() {
+                            //         _selectedReminder = value!;
+                            //       });
+                            //     },
+                            //     items: reminderList
+                            //         .map<DropdownMenuItem<int>>((int value) {
+                            //       return DropdownMenuItem(
+                            //         value: value,
+                            //         child: Text(value.toString()),
+                            //       );
+                            //     }).toList(),
+                            //   ),
+                            // ),
+                            // SizedBox(
+                            //   height: 8,
+                            // ),
+                            // InputFieldForm(
+                            //   hintText: '$_selectedRepeat',
+                            //   widget: DropdownButton<String>(
+                            //     icon: Icon(
+                            //       Icons.keyboard_double_arrow_down_outlined,
+                            //     ),
+                            //     iconSize: 32,
+                            //     elevation: 4,
+                            //     onChanged: (String? value1) {
+                            //       setState(() {
+                            //         _selectedRepeat = value1!;
+                            //       });
+                            //     },
+                            //     items: repeaterList
+                            //         .map<DropdownMenuItem<String>>(
+                            //             (String value) {
+                            //       return DropdownMenuItem(
+                            //         value: value,
+                            //         child: Text(
+                            //           value.toString(),
+                            //         ),
+                            //       );
+                            //     }).toList(),
+                            //     value: _selectedRepeat,
+                            //   ),
+                            // ),
+                            // SizedBox(
+                            //   height: 16,
+                            // ),
+                            Row(
+                              children: [
+                                colorPallete(),
+                              ],
+                            ),
+                            SizedBox(
+                              width: double.infinity,
+                              child: Visibility(
+                                visible: _createdTasks == false,
+                                replacement: Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Icon(Icons
+                                              .arrow_back_ios_new_sharp)),
+                                    ),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Expanded(
+                                      child: ElevatedButton(
+                                          onPressed: () {
+                                            addTask(); // Access userId from widget.task
+                                          },
+                                          child:
+                                              Icon(Icons.arrow_circle_right)),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),

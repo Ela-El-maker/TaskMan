@@ -40,10 +40,12 @@ class _SplashScreenState extends State<SplashScreen> {
       body: BodyBackground(
         child: Center(
           // Displaying an image
-          child: Image.asset(
-            "assets/images/pngwing.com(11).png",
-            width: 120,
-          ),
+          child: Text('Task Manager',
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.w600,
+                color: const Color.fromARGB(255, 133, 131, 131),
+              )),
         ),
       ),
     );

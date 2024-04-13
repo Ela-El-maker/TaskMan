@@ -45,7 +45,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   Text(
                     'SIGN UP',
-                    style: Theme.of(context).textTheme.titleLarge,
+                    style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.w600,
+                          color: const Color.fromARGB(255, 133, 131, 131),
+                        )
                   ),
                   SizedBox(
                     height: 24,
