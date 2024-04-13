@@ -42,49 +42,67 @@ class _CompletedScreenState extends State<CompletedScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        
-        body: SafeArea(
-          child: Column(
-            //mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              _todayDate(),
-              //_addDateBar(),
-              //ProfileTab(),
-              //Icon(Icons.check_box_outlined, size: 100, color: Colors.green),
-              //SizedBox(height: 20),
-              Expanded(child: GetBuilder<CompletedTaskController>(
-                  builder: (completedTaskController) {
-                return Visibility(
-                  visible: completedTaskController.getCompletedTask == false,
-                  replacement: Center(
-                    child: CircularProgressIndicator(),
+      body: SafeArea(
+        child: Column(
+          //mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            _todayDate(),
+            //_addDateBar(),
+            //ProfileTab(),
+            //Icon(Icons.check_box_outlined, size: 100, color: Colors.green),
+            //SizedBox(height: 20),
+            Expanded(child: GetBuilder<CompletedTaskController>(
+                builder: (completedTaskController) {
+              return Visibility(
+                visible: completedTaskController.getCompletedTask == false,
+                replacement: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      //CircularProgressIndicator(),
+                      Text(
+                        'No tasks found!',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 10),
+                      ElevatedButton(
+                        onPressed: () {
+                          // Handle the action when the button is pressed, like refreshing the tasks list
+                          CircularProgressIndicator();
+                          completedTaskController.getCompletedTaskList();
+                        },
+                        child: Text('Refresh'),
+                      ),
+                    ],
                   ),
-                  child: RefreshIndicator(
-                    child: ListView.builder(
-                        physics: BouncingScrollPhysics(),
-                        itemCount: completedTaskController
-                                .taskListModel.taskList?.length ??
-                            0,
-                        itemBuilder: (context, index) {
-                          return TaskItemCard(
-                            task: completedTaskController
-                                .taskListModel.taskList![index],
-                            onStatusChange: () {
-                              completedTaskController.getCompletedTaskList();
-                            },
-                            showProgress: (inProgress) {},
-                          );
-                        }),
-                    onRefresh: () =>
-                        completedTaskController.getCompletedTaskList(),
-                  ),
-                );
-              })),
-            ],
-          ),
+                ),
+                child: RefreshIndicator(
+                  child: ListView.builder(
+                      physics: BouncingScrollPhysics(),
+                      itemCount: completedTaskController
+                              .taskListModel.taskList?.length ??
+                          0,
+                      itemBuilder: (context, index) {
+                        return TaskItemCard(
+                          task: completedTaskController
+                              .taskListModel.taskList![index],
+                          onStatusChange: () {
+                            completedTaskController.getCompletedTaskList();
+                          },
+                          showProgress: (inProgress) {},
+                        );
+                      }),
+                  onRefresh: () =>
+                      completedTaskController.getCompletedTaskList(),
+                ),
+              );
+            })),
+          ],
         ),
+      ),
     );
   }
 

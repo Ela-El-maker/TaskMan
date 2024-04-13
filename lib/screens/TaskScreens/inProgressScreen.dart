@@ -57,7 +57,25 @@ class _ProgressScreenState extends State<ProgressScreen> {
               return Visibility(
                 visible: progressTaskController.getProgressTask == false,
                 replacement: Center(
-                  child: CircularProgressIndicator(),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      //CircularProgressIndicator(),
+                      Text(
+                        'No tasks found!',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 10),
+                      ElevatedButton(
+                        onPressed: () {
+                          // Handle the action when the button is pressed, like refreshing the tasks list
+                          progressTaskController.getProgressTaskList();
+                        },
+                        child: Text('Refresh'),
+                      ),
+                    ],
+                  ),
                 ),
                 child: RefreshIndicator(
                   child: ListView.builder(

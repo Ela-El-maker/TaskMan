@@ -16,38 +16,33 @@ class ProgressTaskController extends GetxController {
 
   Future<bool> getProgressTaskList() async {
     _getProgressTask = true;
-    update();
-    try {
-      // Make HTTP GET request to fetch tasks from server
-      final response = await http.get(Uri.parse(
-          'http://testflutter.felixeladi.co.ke/TaskManager/getInprogressTask.php?username=${loginController.username.value}')); // Replace 'https://example.com/read.php' with your actual endpoint
+  
 
-      if (response.statusCode == 200) {
-        // Parse JSON response
-        final jsonData = jsonDecode(response.body);
-        if (jsonData['success'] == 1) {
-          // Parse task data from JSON
-          List<Task> tasks = (jsonData['tasks'] as List)
-              .map((taskJson) => Task.fromJson(taskJson))
-              .toList();
-          _taskListModel = TaskListModel(
-            status: 'success',
-            taskList: tasks,
-          );
-          update();
-          return true; // Return true if fetching is successful
-        } else {
-          print('Error fetching tasks: ${jsonData['error']}');
-        }
+    http.Response response;
+    response = await http.get(Uri.parse(
+        'http://testflutter.felixeladi.co.ke/TaskManager/getInprogressTask.php?username=${loginController.username.value}')); // Replace 'https://example.com/read.php' with your actual endpoint
+
+    if (response.statusCode == 200) {
+      // Parse JSON response
+      final jsonData = jsonDecode(response.body);
+      if (jsonData['success'] == 1) {
+        // Parse task data from JSON
+        List<Task> tasks = (jsonData['tasks'] as List)
+            .map((taskJson) => Task.fromJson(taskJson))
+            .toList();
+        _taskListModel = TaskListModel(
+          status: 'success',
+          taskList: tasks,
+        );
+        update();
+        return true; // Return true if fetching is successful
       } else {
-        print('Error fetching tasks: ${response.statusCode}');
+        print('Error fetching tasks: ${jsonData['error']}');
       }
-    } catch (e) {
-      print("Error fetching new tasks: $e");
-    } finally {
-      _getProgressTask = false;
-      update(); // Notify listeners that the state has changed
+    } else {
+      print('Error fetching tasks: ${response.statusCode}');
     }
+
     return false; // Return false if fetching fails
   }
 }

@@ -8,6 +8,7 @@ import 'package:zero002/controllers/loginController.dart';
 import 'package:zero002/screens/MoreScreens/moreScreen.dart';
 import 'package:zero002/screens/ProfileScreens/profileScreen.dart';
 
+import '../TaskScreens/mainPageScreen.dart';
 import 'editProfileScreen.dart';
 
 class ProfileTab extends StatelessWidget {
@@ -79,34 +80,34 @@ class ProfileTab extends StatelessWidget {
         title: Text(
           '${loginController.username.value}',
           style: TextStyle(
-            color: Colors.black,
+            color: dark ? Colors.white : Colors.black,
             fontSize: 25,
             fontWeight: FontWeight.w700,
           ),
         ),
-        trailing: IconButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              PageRouteBuilder(
-                transitionDuration: Duration(milliseconds: 1000),
-                transitionsBuilder:
-                    (context, animation, secondaryAnimation, child) {
-                  return SlideTransition(
-                    position: Tween(begin: Offset(1.0, 0.0), end: Offset.zero)
-                        .animate(animation),
-                    child: child,
-                  );
-                },
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                    MoreScreen(),
-              ),
-            );
-          },
-          icon: Icon(
-            Icons.more_vert_rounded,
-          ),
-        ),
+        // trailing: IconButton(
+        //   onPressed: () {
+        //     Navigator.push(
+        //       context,
+        //       PageRouteBuilder(
+        //         transitionDuration: Duration(milliseconds: 1000),
+        //         transitionsBuilder:
+        //             (context, animation, secondaryAnimation, child) {
+        //           return SlideTransition(
+        //             position: Tween(begin: Offset(1.0, 0.0), end: Offset.zero)
+        //                 .animate(animation),
+        //             child: child,
+        //           );
+        //         },
+        //         pageBuilder: (context, animation, secondaryAnimation) =>
+        //             MoreScreen(),
+        //       ),
+        //     );
+        //   },
+        //   icon: Icon(
+        //     Icons.more_vert_rounded,
+        //   ),
+        // ),
       );
     });
   }

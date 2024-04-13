@@ -64,68 +64,135 @@ class _NewScreenState extends State<NewScreen> {
             _todayDate(),
             //_addDateBar(),
             //ProfileTab(),
-            Visibility(
-              visible: getTaskCountInProgress == false &&
-                  (taskCountListModel.taskCountList?.isNotEmpty ?? false),
-              //replacement: LinearProgressIndicator(),
-              // Set visibility to true to display the icon
-              child: SizedBox(
-                height: 120,
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: taskCountListModel.taskCountList?.length ?? 0,
-                    itemBuilder: (context, index) {
-                      TaskCount taskCount =
-                          taskCountListModel.taskCountList![index];
-                      return FittedBox(
-                        child: SummaryCard(
-                          count: taskCount.sum.toString(),
-                          title: taskCount.id ?? '',
-                        ),
-                      );
-                    }),
-              ),
-            ),
+            // Visibility(
+            //   visible: getTaskCountInProgress == false &&
+            //       (taskCountListModel.taskCountList?.isNotEmpty ?? false),
+            //   //replacement: LinearProgressIndicator(),
+            //   // Set visibility to true to display the icon
+            //   child: SizedBox(
+            //     height: 120,
+            //     child: ListView.builder(
+            //         scrollDirection: Axis.horizontal,
+            //         itemCount: taskCountListModel.taskCountList?.length ?? 0,
+            //         itemBuilder: (context, index) {
+            //           TaskCount taskCount =
+            //               taskCountListModel.taskCountList![index];
+            //           return FittedBox(
+            //             child: SummaryCard(
+            //               count: taskCount.sum.toString(),
+            //               title: taskCount.id ?? '',
+            //             ),
+            //           );
+            //         }),
+            //   ),
+            // ),
+            // Expanded(
+            //   child: GetBuilder<NewTaskController>(
+            //     builder: (newTaskController) {
+            //       return Visibility(
+            //           visible: newTaskController.getNewTaskInProgress == false,
+            //           replacement: Center(
+            //             child: CircularProgressIndicator(),
+            //           ),
+            //           child:  RefreshIndicator(
+            //                   onRefresh: () =>
+            //                       newTaskController.getNewTaskList(),
+            //                   child: AnimationLimiter(
+            //                     child: ListView.builder(
+            //                       padding: EdgeInsets.all(_w / 20),
+            //                       physics: BouncingScrollPhysics(
+            //                           parent: AlwaysScrollableScrollPhysics()),
+            //                       itemCount: newTaskController
+            //                               .taskListModel.taskList?.length ??
+            //                           0,
+            //                       itemBuilder: (context, index) {
+            //                         return AnimationConfiguration.staggeredList(
+            //                           position: index,
+            //                           delay: Duration(milliseconds: 100),
+            //                           child: SlideAnimation(
+            //                             duration: Duration(milliseconds: 2500),
+            //                             curve: Curves.fastLinearToSlowEaseIn,
+            //                             verticalOffset: -250,
+            //                             child: TaskItemCard(
+            //                                 task: newTaskController
+            //                                     .taskListModel.taskList![index],
+            //                                 onStatusChange: () {
+            //                                   newTaskController
+            //                                       .getNewTaskList();
+            //                                   setState(() {});
+            //                                 },
+            //                                 showProgress: (inProgress) {}),
+            //                           ),
+            //                         );
+            //                       },
+            //                     ),
+
+            //                   ),
+            //                 ));
+            //     },
+            //   ),
+            // ),
+
             Expanded(
               child: GetBuilder<NewTaskController>(
                 builder: (newTaskController) {
                   return Visibility(
-                      visible: newTaskController.getNewTaskInProgress == false,
-                      replacement: Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                      child: RefreshIndicator(
-                        onRefresh: () => newTaskController.getNewTaskList(),
-                        child: AnimationLimiter(
-                          child: ListView.builder(
-                            padding: EdgeInsets.all(_w / 20),
-                            physics: BouncingScrollPhysics(
-                                parent: AlwaysScrollableScrollPhysics()),
-                            itemCount: newTaskController
-                                    .taskListModel.taskList?.length ??
-                                0,
-                            itemBuilder: (context, index) {
-                              return AnimationConfiguration.staggeredList(
-                                position: index,
-                                delay: Duration(milliseconds: 100),
-                                child: SlideAnimation(
-                                  duration: Duration(milliseconds: 2500),
-                                  curve: Curves.fastLinearToSlowEaseIn,
-                                  verticalOffset: -250,
-                                  child: TaskItemCard(
-                                      task: newTaskController
-                                          .taskListModel.taskList![index],
-                                      onStatusChange: () {
-                                        newTaskController.getNewTaskList();
-                                        setState(() {});
-                                      },
-                                      showProgress: (inProgress) {}),
-                                ),
-                              );
-                            },
+                    visible: newTaskController.getNewTaskInProgress == false,
+                    replacement: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'No tasks found!',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
                           ),
+                          SizedBox(height: 10),
+                          ElevatedButton(
+                            onPressed: () {
+                              // Handle the action when the button is pressed, like refreshing the tasks list
+                              newTaskController.getNewTaskList();
+                            },
+                            child: Text('Refresh'),
+                          ),
+                        ],
+                      ),
+                    ),
+                    child: RefreshIndicator(
+                      onRefresh: () => newTaskController.getNewTaskList(),
+                      child: AnimationLimiter(
+                        child: ListView.builder(
+                          padding: EdgeInsets.all(_w / 20),
+                          physics: BouncingScrollPhysics(
+                            parent: AlwaysScrollableScrollPhysics(),
+                          ),
+                          itemCount: newTaskController
+                                  .taskListModel.taskList?.length ??
+                              0,
+                          itemBuilder: (context, index) {
+                            return AnimationConfiguration.staggeredList(
+                              position: index,
+                              delay: Duration(milliseconds: 100),
+                              child: SlideAnimation(
+                                duration: Duration(milliseconds: 2500),
+                                curve: Curves.fastLinearToSlowEaseIn,
+                                verticalOffset: -250,
+                                child: TaskItemCard(
+                                  task: newTaskController
+                                      .taskListModel.taskList![index],
+                                  onStatusChange: () {
+                                    newTaskController.getNewTaskList();
+                                    setState(() {});
+                                  },
+                                  showProgress: (inProgress) {},
+                                ),
+                              ),
+                            );
+                          },
                         ),
-                      ));
+                      ),
+                    ),
+                  );
                 },
               ),
             ),

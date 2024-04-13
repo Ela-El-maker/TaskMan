@@ -15,6 +15,7 @@ import '../constants/colors.dart';
 import '../controllers/loginController.dart';
 import '../controllers/taskController.dart';
 import '../models/TaskModels/taskCountModel.dart';
+import '../screens/TaskScreens/addNewTask.dart';
 import '../screens/TaskScreens/mainPageScreen.dart';
 import 'customAnimation.dart';
 
@@ -330,121 +331,140 @@ class _TaskItemCardState extends State<TaskItemCard> {
             ),
           );
         },
-        child: Container(
-          // decoration: BoxDecoration(
-          //   borderRadius: BorderRadius.circular(16),
-          //   color: _getBGClr(widget.task?.color ?? 0),
-          // ),
-          child: Card(
-            // color: dark
-            //     ? Colors.grey[900]
-            //     : Colors.purple[100], // Use dark background color
-            color: _getBGClr(widget.task?.color ?? 0),
-            margin: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-            child: Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                //       padding: EdgeInsets.all(16),
-                // //  width: SizeConfig.screenWidth * 0.78,
-                // decoration: BoxDecoration(
-                //   borderRadius: BorderRadius.circular(16),
-                //   color: _getBGClr(widget.task?.color??0),
-                // ),
-                children: [
-                  Text(
-                    'Task ID : ' + widget.task.id!,
-                    style: TextStyle(
+        child: Card(
+          // color: dark
+          //     ? Colors.grey[900]
+          //     : Colors.purple[100], // Use dark background color
+          color: getColorByIndex(widget.task?.color ?? 0),
+          margin: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+          child: Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              //       padding: EdgeInsets.all(16),
+              // //  width: SizeConfig.screenWidth * 0.78,
+              // decoration: BoxDecoration(
+              //   borderRadius: BorderRadius.circular(16),
+              //   color: _getBGClr(widget.task?.color??0),
+              // ),
+              children: [
+                Text(
+                  'Task ID : ' + widget.task.id!,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                    color:
+                        dark ? Colors.white : Colors.black, // Adjust text color
+                  ),
+                ),
+                Divider(color: dark ? Colors.white : Colors.black),
+                SizedBox(
+                  height: 8,
+                ),
+                Text(
+                  widget.task.title ?? '',
+                  style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
-                      color: dark
-                          ? Colors.white
-                          : Colors.black, // Adjust text color
-                    ),
+                      color: dark ? Colors.white : Colors.black),
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Text(
+                  widget.task.description ?? '',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: dark ? Colors.white : Colors.black,
+                    fontWeight: FontWeight.w200,
                   ),
-                  Divider(color: dark ? Colors.white : Colors.black),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Text(
-                    widget.task.title ?? '',
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        color: dark ? Colors.white : Colors.black),
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Text(
-                    widget.task.description ?? '',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: dark ? Colors.white : Colors.black,
-                      fontWeight: FontWeight.w200,
-                    ),
-                  ),
-                  //Text('Date: ${formattedDateTime(widget.task.createdAt ?? '')}'),
-                  Divider(color: dark ? Colors.white : Colors.black),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Chip(
-                        label: Text(
-                          widget.task.status ?? 'New',
-                          style: TextStyle(
-                              color: dark ? Colors.white : Colors.black),
+                ),
+                Divider(color: dark ? Colors.white : Colors.black),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'From : ' + (widget.task.startTime ?? ''),
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Color.fromARGB(221, 220, 10, 6),
+                          fontWeight: FontWeight.w300,
                         ),
-                        backgroundColor: _getChipColor(widget.task.status),
                       ),
-                      Wrap(
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              showUpdateStatusModal(context, widget.task);
-                            },
-                            icon: Icon(
-                              Icons.mode_edit_outlined,
-                              size: 25,
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              // //var easyloading;
-                              // easyloading.EasyLoading.show(
-                              //   // Using the alias
-                              //   status: 'Sorry',
-                              // );
-                              // Future.delayed(Duration(seconds: 2), () {
-                              //   easyloading.EasyLoading
-                              //       .dismiss(); // Dismiss the loading indicator
-                              // });
-
-                              showDeleteStatusModal(context);
-                            },
-                            icon: Icon(
-                              Icons.delete_forever_rounded,
-                              color: Colors.red,
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Divider(color: dark ? Colors.white : Colors.black),
-                  Text(
-                    'Date : ' + (widget.task.date ?? ''),
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Color.fromARGB(221, 9, 204, 22),
-                      fontWeight: FontWeight.w300,
                     ),
+                    Expanded(
+                      child: Text(
+                        'To : ' + (widget.task.dueTime ?? ''),
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Color.fromARGB(221, 220, 10, 6),
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                //Text('Date: ${formattedDateTime(widget.task.createdAt ?? '')}'),
+                Divider(color: dark ? Colors.white : Colors.black),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Chip(
+                      label: Text(
+                        widget.task.status ?? 'New',
+                        style: TextStyle(
+                            color: dark ? Colors.white : Colors.black),
+                      ),
+                      backgroundColor: _getChipColor(widget.task.status),
+                    ),
+                    Wrap(
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            showUpdateStatusModal(context, widget.task);
+                          },
+                          icon: Icon(
+                            Icons.mode_edit_outlined,
+                            size: 25,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            // //var easyloading;
+                            // easyloading.EasyLoading.show(
+                            //   // Using the alias
+                            //   status: 'Sorry',
+                            // );
+                            // Future.delayed(Duration(seconds: 2), () {
+                            //   easyloading.EasyLoading
+                            //       .dismiss(); // Dismiss the loading indicator
+                            // });
+
+                            showDeleteStatusModal(context);
+                          },
+                          icon: Icon(
+                            Icons.delete_forever_rounded,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Divider(color: dark ? Colors.white : Colors.black),
+                Text(
+                  'Date : ' + (widget.task.date ?? ''),
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Color.fromARGB(221, 154, 220, 12),
+                    fontWeight: FontWeight.w300,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -462,6 +482,27 @@ class _TaskItemCardState extends State<TaskItemCard> {
         return yellowColor;
       default:
         return tealColor;
+    }
+  }
+
+  Color getColorByIndex(int index) {
+    switch (index) {
+      case 0:
+        return limeColor;
+      case 1:
+        return azureGlassColor;
+      case 2:
+        return roseGlassColor;
+      case 3:
+        return indigoColor;
+      case 4:
+        return amberColor; // Add the fifth color
+      case 5:
+        return tealColor; // Add the sixth color
+      case 6:
+        return turquoiseGlassColor;
+      default:
+        return Colors.transparent;
     }
   }
 

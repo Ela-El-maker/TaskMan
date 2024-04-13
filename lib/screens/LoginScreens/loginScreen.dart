@@ -8,6 +8,7 @@ import 'package:zero002/URLs/urls.dart';
 import 'package:zero002/controllers/authenticationController.dart';
 import 'package:zero002/models/userModel.dart';
 import 'package:zero002/screens/LoginScreens/signupScreen.dart';
+import 'package:zero002/screens/TaskScreens/mainPageScreen.dart';
 import 'package:zero002/widgets/background.dart';
 
 import '../../controllers/loginController.dart';
@@ -31,118 +32,120 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BodyBackground(
-        child: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.all(24.0),
-            child: SingleChildScrollView(
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: 80,
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.all(24.0),
+          child: SingleChildScrollView(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 80,
+                  ),
+                  Center(
+                    child: Text('SIGN IN',
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        )),
+                  ),
+                  SizedBox(
+                    height: 24,
+                  ),
+                  TextFormField(
+                    controller: _usernameTextEditingController,
+                    keyboardType: TextInputType.name,
+                    decoration: InputDecoration(
+                      hintText: 'username',
+                      prefixIcon: Icon(Icons.person_4_rounded),
                     ),
-                    Center(
-                      child: Text(
-                        "Login...",
-                        style: Theme.of(context).textTheme.headlineLarge,
-                      ),
+                    validator: (String? value) {
+                      if (value?.trim().isEmpty ?? true) {
+                        return 'Enter a valid username!!!';
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  TextFormField(
+                    controller: _passwordTextEditingController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      hintText: 'Password',
+                      prefixIcon: Icon(Icons.lock),
                     ),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    TextFormField(
-                      controller: _usernameTextEditingController,
-                      keyboardType: TextInputType.name,
-                      decoration: InputDecoration(
-                        hintText: 'username',
-                      ),
-                      validator: (String? value) {
-                        if (value?.trim().isEmpty ?? true) {
-                          return 'Enter a valid username!!!';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    TextFormField(
-                      controller: _passwordTextEditingController,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        hintText: 'Password',
-                      ),
-                      validator: (String? value) {
-                        if (value?.isEmpty ?? true) {
-                          return 'Enter valid password!!!';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    SizedBox(
-                      width: double.infinity,
-                      child: GetBuilder<LoginController>(
-                        builder: (loginController) {
-                          return Visibility(
-                            //visible: loginController.username == false,
-                            replacement: Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                login();
-                              },
-                              child: Icon(
-                                Icons.arrow_circle_right_sharp,
-                                size: 30,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                    SizedBox(
-                      height: 48,
-                    ),
-                    Center(
-                      child: TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            "Forgot Password?",
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 16,
-                            ),
-                          )),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Don't have an account?",
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black54),
-                        ),
-                        TextButton(
+                    validator: (String? value) {
+                      if (value?.isEmpty ?? true) {
+                        return 'Enter valid password!!!';
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    child: GetBuilder<LoginController>(
+                      builder: (loginController) {
+                        return Visibility(
+                          //visible: loginController.username == false,
+                          replacement: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                          child: ElevatedButton(
                             onPressed: () {
-                              Get.off(SignUpScreen());
+                              login();
                             },
-                            child: Text(
-                              'Sign Up',
-                              style: TextStyle(fontSize: 16),
-                            ))
-                      ],
-                    )
-                  ],
-                ),
+                            child: Icon(
+                              Icons.arrow_circle_right_sharp,
+                              size: 30,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 48,
+                  ),
+                  Center(
+                    child: TextButton(
+                        onPressed: () {},
+                        child: Text(
+                          "Forgot Password?",
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 16,
+                          ),
+                        )),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Don't have an account?",
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black54),
+                      ),
+                      TextButton(
+                          onPressed: () {
+                            Get.off(SignUpScreen());
+                          },
+                          child: Text(
+                            'Sign Up',
+                            style: TextStyle(fontSize: 16),
+                          ))
+                    ],
+                  )
+                ],
               ),
             ),
           ),
@@ -151,109 +154,6 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-//
-  // Future<void> login() async {
-  //   if (!_formKey.currentState!.validate()) {
-  //     return;
-  //   }
-
-  //   try {
-  //     final response = await http.get(Uri.parse(
-  //         "http://testflutter.felixeladi.co.ke/TaskManager/signin.php?username=${_usernameTextEditingController.text.trim()}&password=${_passwordTextEditingController.text.trim()}"));
-
-  //     if (response.statusCode == 200) {
-  //       var serverResponse = json.decode(response.body);
-  //       int loginStatus = serverResponse['success'];
-  //       if (loginStatus == 1) {
-  //         print("Login Successfully");
-  //         //loginController.updateUsername(username);
-  //         //loginController.updateEmailAddress(emailAddress);
-  //         // Proceed with other actions
-
-  //         // var userData = serverResponse['userdata'];
-  //         // print(userData);
-  //         // var userModel = UserModel.fromJson(userData[0]);
-  //         // print(userModel.username);
-  //         // var username = userData[0]['username'];
-  //         // print(username);
-
-  //         // Access and print the user ID
-  //         // var userId = userData[0]['id'];
-  //         // print('User ID: $userId');
-  //         // final SharedPreferences sharedPreferences =
-  //         //     await SharedPreferences.getInstance();
-
-  //         // sharedPreferences.setString(
-  //         //     'username', _usernameTextEditingController.text);
-  //         var userData = serverResponse['userdata'];
-  //         print(userData);
-  //         String username = userData[0]['username'];
-  //         String emailAddress = userData[0]['emailAddress'];
-  //         String photo = userData[0]['photo'];
-  //         String userId = userData[0]['id'];
-  //         loginController.updateUsername(username);
-  //         loginController.updateEmailAddress(emailAddress);
-  //         loginController.updatePhoto(photo);
-  //         loginController.updateuserID(userId);
-
-  //         // Check if token and user data are not null before saving
-  //         // var token = serverResponse['token'] as String?;
-  //         // if (token != null && userModel != null) {
-  //         //   await _authController.saveUserInformation(token, userModel);
-  //         // }
-  //         print("Good to go!!!");
-  //         ScaffoldMessenger.of(context).showSnackBar(
-  //           SnackBar(
-  //             content: Title(
-  //               color: Colors.greenAccent,
-  //               child: Text(
-  //                 'Login was Successful',
-  //                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
-  //               ),
-  //             ),
-  //           ),
-  //         );
-  //         Get.toNamed(
-  //           '/mainScreen',
-  //           arguments: userData,
-  //         );
-  //       } else {
-  //         ScaffoldMessenger.of(context).showSnackBar(
-  //           SnackBar(
-  //             content: Title(
-  //               color: Color.fromARGB(255, 217, 5, 40),
-  //               child: Text(
-  //                 'Incorrect Credentials',
-  //                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
-  //               ),
-  //             ),
-  //           ),
-  //         );
-  //       }
-  //     } else {
-  //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-  //         content: Title(
-  //           color: Color.fromARGB(255, 217, 5, 40),
-  //           child: Text(
-  //             'Server Error ${response.statusCode}',
-  //             style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
-  //           ),
-  //         ),
-  //       ));
-  //     }
-  //   } catch (e) {
-  //     print('Error during login: $e');
-  //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-  //       content: Title(
-  //         color: Color.fromARGB(255, 217, 5, 40),
-  //         child: Text(
-  //           'Network Error: $e',
-  //           style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
-  //         ),
-  //       ),
-  //     ));
-  //   }
-  // }
   Future<void> login() async {
     if (!_formKey.currentState!.validate()) {
       return;

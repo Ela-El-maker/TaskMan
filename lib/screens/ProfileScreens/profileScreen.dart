@@ -18,6 +18,8 @@ class ProfileScreen extends StatefulWidget {
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
+
+
 class _ProfileScreenState extends State<ProfileScreen> {
   final TextEditingController _emailTextEditingController =
       TextEditingController();
@@ -28,6 +30,56 @@ class _ProfileScreenState extends State<ProfileScreen> {
       TextEditingController();
   final TextEditingController _mobileTextEditingController =
       TextEditingController();
+      
+  Container photoImageField() {
+    return Container(
+      height: 50,
+      decoration: BoxDecoration(
+          color: Colors.white, borderRadius: BorderRadius.circular(8)),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 1,
+            child: Container(
+              height: 50,
+              decoration: BoxDecoration(
+                  color: Colors.grey,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(8),
+                      bottomLeft: Radius.circular(8))),
+              alignment: Alignment.center,
+              child: Text(
+                'Photo',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
+          Expanded(
+              flex: 3,
+              child: InkWell(
+                onTap: () async {
+                  final XFile? image = await ImagePicker()
+                      .pickImage(source: ImageSource.camera, imageQuality: 50);
+                  if (image != null) {
+                    photo = image;
+                    if (mounted) {
+                      setState(() {});
+                    }
+                  }
+                },
+                child: Container(
+                  padding: EdgeInsets.only(left: 16),
+                  child: Visibility(
+                    visible: photo == null,
+                    replacement: Text(photo?.name ?? ''),
+                    child: Text('Select photo'),
+                  ),
+                ),
+              ))
+        ],
+      ),
+    );
+  }
 
   AuthController authController = Get.find<AuthController>();
   bool _updatePersonalProfile = false;
@@ -221,53 +273,4 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  Container photoImageField() {
-    return Container(
-      height: 50,
-      decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(8)),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 1,
-            child: Container(
-              height: 50,
-              decoration: BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(8),
-                      bottomLeft: Radius.circular(8))),
-              alignment: Alignment.center,
-              child: Text(
-                'Photo',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-          ),
-          Expanded(
-              flex: 3,
-              child: InkWell(
-                onTap: () async {
-                  final XFile? image = await ImagePicker()
-                      .pickImage(source: ImageSource.camera, imageQuality: 50);
-                  if (image != null) {
-                    photo = image;
-                    if (mounted) {
-                      setState(() {});
-                    }
-                  }
-                },
-                child: Container(
-                  padding: EdgeInsets.only(left: 16),
-                  child: Visibility(
-                    visible: photo == null,
-                    replacement: Text(photo?.name ?? ''),
-                    child: Text('Select photo'),
-                  ),
-                ),
-              ))
-        ],
-      ),
-    );
-  }
 }

@@ -13,6 +13,7 @@ import 'package:zero002/widgets/inputField.dart';
 
 import '../../constants/colors.dart';
 import '../../controllers/loginController.dart';
+import 'mainPageScreen.dart';
 // main.dart
 //import 'package:decorated_icon/cupertino_will_pop_scope.dart';
 
@@ -95,7 +96,12 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                               ),
                               Text(
                                 'Add new Task',
-                                style: Theme.of(context).textTheme.titleLarge,
+                                //style: Theme.of(context).textTheme.titleLarge,
+                                style: TextStyle(
+                                  fontSize: 38,
+                                  fontWeight: FontWeight.w800,
+                                  color: dark ? Colors.white : Colors.black,
+                                ),
                               ),
                               SizedBox(
                                 height: 16,
@@ -384,7 +390,7 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                 padding: const EdgeInsets.only(right: 8.0),
                 child: CircleAvatar(
                   radius: 20,
-                  backgroundColor: _getColorByIndex(index),
+                  backgroundColor: getColorByIndex(index),
                   child: selectedColor == index
                       ? Icon(
                           Icons.done,
@@ -404,7 +410,7 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
     );
   }
 
-  Color _getColorByIndex(int index) {
+  Color getColorByIndex(int index) {
     switch (index) {
       case 0:
         return limeColor;
@@ -418,6 +424,8 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
         return amberColor; // Add the fifth color
       case 5:
         return tealColor; // Add the sixth color
+      case 6:
+        return turquoiseGlassColor;
       default:
         return Colors.transparent;
     }
