@@ -53,7 +53,7 @@ class TaskManager extends StatelessWidget {
 class ControllerBinder extends Bindings {
   @override
   void dependencies() {
-    Get.put(AuthController());
+    //Get.put(AuthController());
     Get.put(LoginController());
     Get.put(NewTaskController());
     Get.put(ProgressTaskController());

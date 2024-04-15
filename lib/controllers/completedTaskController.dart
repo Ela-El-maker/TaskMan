@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
+import 'package:zero002/controllers/taskController.dart';
 import 'package:zero002/models/TaskModels/taskCountModel.dart';
 
 import 'loginController.dart';
@@ -12,6 +13,7 @@ class CompletedTaskController extends GetxController {
 
   bool get getCompletedTask => _getCompletedTask;
 
+  TaskController taskController = Get.put(TaskController());
   TaskListModel get taskListModel => _taskListModel;
 
   Future<bool> getCompletedTaskList() async {
@@ -35,7 +37,8 @@ class CompletedTaskController extends GetxController {
             status: 'success',
             taskList: tasks,
           );
-          update();
+          //update();
+          taskController.taskList.value;
           return true; // Return true if fetching is successful
         } else {
           print('Error fetching tasks: ${jsonData['error']}');
@@ -50,5 +53,30 @@ class CompletedTaskController extends GetxController {
       update(); // Notify listeners that the state has changed
     }
     return success; // Return false if fetching fails
+  }
+  Future<void> deleteTask(taskId) async {
+    try {
+      final response = await http.get(
+        Uri.parse(
+            'http://testflutter.felixeladi.co.ke/TaskManager/deleteTask.php?id=$taskId'),
+      );
+
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+        if (jsonData['success'] == 1) {
+          // Task deleted successfully
+          print('Deleted Successfully');
+        } else {
+          // Error deleting task
+          print('Error deleting task: ${jsonData['error']}');
+        }
+      } else {
+        // Server returned an error status code
+        print('Error deleting task: ${response.statusCode}');
+      }
+    } catch (e) {
+      // Exception occurred during request
+      print('Error deleting task: $e');
+    }
   }
 }

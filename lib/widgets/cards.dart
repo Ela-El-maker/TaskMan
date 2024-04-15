@@ -6,7 +6,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
+import 'package:zero002/controllers/completedTaskController.dart';
 import 'package:zero002/controllers/newTaskController.dart';
+import 'package:zero002/controllers/progressTaskController.dart';
 import 'package:zero002/models/userModel.dart';
 import 'package:zero002/screens/TaskScreens/editTaskScreen.dart';
 import 'package:zero002/screens/TaskScreens/taskDetailsScreen.dart';
@@ -23,7 +25,6 @@ enum TaskStatus {
   New,
   Pending,
   Completed,
-  Cancelled,
 }
 
 void configLoading() {
@@ -91,6 +92,11 @@ class TaskItemCard extends StatefulWidget {
 LoginController loginController = Get.put(LoginController());
 TaskController taskController = Get.put(TaskController());
 NewTaskController newTaskController = Get.put(NewTaskController());
+ProgressTaskController progressTaskController =
+    Get.put(ProgressTaskController());
+
+CompletedTaskController completedTaskController =
+    Get.put(CompletedTaskController());
 
 class _TaskItemCardState extends State<TaskItemCard> {
   // Future<void> updateTaskStatus(String status, Task task) async {
@@ -532,6 +538,8 @@ class _TaskItemCardState extends State<TaskItemCard> {
                 onTap: () {
                   updateTaskStatus(context, task!, status);
                   newTaskController.getNewTaskList();
+                  progressTaskController.getProgressTaskList();
+                  completedTaskController.getCompletedTaskList();
                 },
               );
             }).toList(),
@@ -584,11 +592,6 @@ class _TaskItemCardState extends State<TaskItemCard> {
           Icons.playlist_add_check_circle_outlined,
           color: Colors.green,
         );
-      case TaskStatus.Cancelled:
-        return Icon(
-          Icons.cancel_outlined,
-          color: Colors.red,
-        );
       default:
         return SizedBox(); // Return an empty sizedbox for unknown status
     }
@@ -614,9 +617,13 @@ class _TaskItemCardState extends State<TaskItemCard> {
             TextButton.icon(
               onPressed: () {
                 // Dismiss the dialog and return true
+                newTaskController.getNewTaskList();
+                progressTaskController.getProgressTaskList();
+                progressTaskController.deleteTask(widget.task.id);
+                completedTaskController.getCompletedTaskList();
+                completedTaskController.deleteTask(widget.task.id);
                 newTaskController.deleteTask(widget.task.id);
                 Navigator.pop(context);
-                newTaskController.getNewTaskList();
               },
               icon: Icon(
                 Icons.check_circle_outlined,

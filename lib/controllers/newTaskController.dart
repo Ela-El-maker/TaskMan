@@ -83,6 +83,8 @@ class NewTaskController extends GetxController {
         _getNewTaskInProgress = false;
 
         update(); // Notify listeners that the state has changed
+                  taskController.taskList.value ?? '';
+
         return true; // Return true if fetching is successful
       } else {
         print('Error fetching tasks: ${jsonData['error']}');

@@ -27,8 +27,10 @@ class _LoginScreenState extends State<LoginScreen> {
       TextEditingController();
 
   LoginController loginController = Get.find<LoginController>();
-  AuthController _authController = AuthController();
+
+  // AuthController _authController = AuthController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool _obscureText = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     controller: _usernameTextEditingController,
                     keyboardType: TextInputType.name,
                     decoration: InputDecoration(
-                      hintText: 'username',
+                      hintText: 'Username',
                       prefixIcon: Icon(Icons.person_4_rounded),
                     ),
                     validator: (String? value) {
@@ -76,9 +78,24 @@ class _LoginScreenState extends State<LoginScreen> {
                     controller: _passwordTextEditingController,
                     obscureText: true,
                     decoration: InputDecoration(
-                      hintText: 'Password',
-                      prefixIcon: Icon(Icons.lock),
-                    ),
+                        hintText: 'Password',
+                        prefixIcon: Icon(Icons.lock),
+                        suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscureText
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: _obscureText
+                                  ? Colors.grey
+                                  : Colors
+                                      .blue, // Change color based on visibility
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscureText =
+                                    !_obscureText; // Toggle text visibility
+                              });
+                            })),
                     validator: (String? value) {
                       if (value?.isEmpty ?? true) {
                         return 'Enter valid password!!!';

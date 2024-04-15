@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> goToLogin() async {
     // Check the authentication state
-    final bool isLoggedIn = await Get.find<AuthController>().checkAuthState();
+    //final bool isLoggedIn = await Get.find<AuthController>().checkAuthState();
 
     // Delay for 2 seconds before navigating
     Future.delayed(Duration(seconds: 2)).then((_) {

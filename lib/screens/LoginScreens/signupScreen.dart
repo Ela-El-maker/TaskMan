@@ -26,10 +26,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
       TextEditingController();
 
   XFile? photo;
+  bool _obscureText = true;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -43,14 +45,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   SizedBox(
                     height: 80,
                   ),
-                  Text(
-                    'SIGN UP',
-                    style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.w600,
-                          color: const Color.fromARGB(255, 133, 131, 131),
-                        )
-                  ),
+                  Text('SIGN UP',
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.w600,
+                        color: const Color.fromARGB(255, 133, 131, 131),
+                      )),
                   SizedBox(
                     height: 24,
                   ),
@@ -107,16 +107,29 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   TextFormField(
                     controller: _passwordTextEditingController,
+                    obscureText: true,
                     decoration: InputDecoration(
-                      hintText: 'Password',
-                      prefixIcon: Icon(Icons.lock),
-                    ),
+                        hintText: 'Password',
+                        prefixIcon: Icon(Icons.lock),
+                        suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscureText
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: _obscureText
+                                  ? Colors.grey
+                                  : Colors
+                                      .blue, // Change color based on visibility
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscureText =
+                                    !_obscureText; // Toggle text visibility
+                              });
+                            })),
                     validator: (String? value) {
-                      if (value?.trim().isEmpty ?? true) {
-                        return 'Enter your password...';
-                      }
-                      if (value!.length < 6) {
-                        return 'Enter password with more than 6 characters...';
+                      if (value?.isEmpty ?? true) {
+                        return 'Enter valid password!!!';
                       }
                       return null;
                     },

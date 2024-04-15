@@ -21,8 +21,8 @@ class ProfileTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<AuthController>(builder: (authController) {
-      String base64Image = authController.user?.photo ?? '';
+    return GetBuilder<LoginController>(builder: (authController) {
+      String base64Image = loginController.photo.value ?? '';
       // Remove prefix if present
       if (base64Image.startsWith('data:image')) {
         base64Image = base64Image.split(',').last;

@@ -81,18 +81,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  AuthController authController = Get.find<AuthController>();
+ // AuthController authController = Get.find<AuthController>();
   bool _updatePersonalProfile = false;
 
   XFile? photo;
 
-  @override
-  void initState() {
-    super.initState();
-    _emailTextEditingController.text = authController.user?.emailAddress ?? '';
-    _userNameTextEditingController.text = authController.user?.username ?? '';
-    _mobileTextEditingController.text = authController.user?.username ?? '';
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _emailTextEditingController.text = authController.user?.emailAddress ?? '';
+  //   _userNameTextEditingController.text = authController.user?.username ?? '';
+  //   _mobileTextEditingController.text = authController.user?.username ?? '';
+  // }
 
   @override
   Widget build(BuildContext context) {
