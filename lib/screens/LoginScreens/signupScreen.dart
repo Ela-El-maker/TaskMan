@@ -24,6 +24,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
       TextEditingController();
   final TextEditingController _passwordTextEditingController =
       TextEditingController();
+  final TextEditingController _confirmPasswordTextEditingController =
+      TextEditingController();
+  final RegExp emailValid =
+      RegExp(r"^[a-zA-Z0-9.!#%&_^?+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
 
   XFile? photo;
   bool _obscureText = true;
@@ -31,7 +35,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -79,8 +82,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       prefixIcon: Icon(Icons.email_outlined),
                     ),
                     validator: (String? value) {
-                      if (value?.trim().isEmpty ?? true) {
-                        return 'Enter your Email address...';
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a Email address';
+                      } else if (!emailValid.hasMatch(value)) {
+                        return 'Please enter a valid Email address';
                       }
                       return null;
                     },
@@ -128,8 +133,46 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               });
                             })),
                     validator: (String? value) {
-                      if (value?.isEmpty ?? true) {
-                        return 'Enter valid password!!!';
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a password';
+                      } else if (value.length < 6) {
+                        return 'Password must be at least 6 characters';
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  TextFormField(
+                    controller: _confirmPasswordTextEditingController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                        hintText: 'Confirm Password',
+                        prefixIcon: Icon(Icons.lock),
+                        suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscureText
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: _obscureText
+                                  ? Colors.grey
+                                  : Colors
+                                      .blue, // Change color based on visibility
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscureText =
+                                    !_obscureText; // Toggle text visibility
+                              });
+                            })),
+                    validator: (String? value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a password';
+                      } else if (value.length < 6) {
+                        return 'Password must be at least 6 characters';
+                      } else if (value != _passwordTextEditingController.text) {
+                        return 'Passwords do not match';
                       }
                       return null;
                     },
@@ -233,133 +276,246 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
+//   Future<void> _signUp() async {
+// http.Response response;
+//     if(_formKey.currentState!.validate()){
+
+//     // var body = {
+//     //   'username': _usernameTextEditingController.text.trim(),
+//     //   'emailAddress': _emailTextEditingController.text.trim(),
+//     //   'mobileNumber': _mobileTextEditingController.text.trim(),
+//     //   'password': _passwordTextEditingController.text.trim(),
+//     // };
+
+//     String? photoImage;
+//     Map<String, dynamic> inputData = {
+//       'username': _usernameTextEditingController.text.trim(),
+//       'emailAddress': _emailTextEditingController.text.trim(),
+//       'mobileNumber': _mobileTextEditingController.text.trim(),
+//       'password': _passwordTextEditingController.text.trim(),
+//     };
+
+// // Check if email and password are not empty
+//     if (_usernameTextEditingController.text.trim().isNotEmpty &&
+//         _passwordTextEditingController.text.trim().isNotEmpty) {
+//       // Check if the password matches the confirmed password (if applicable)
+//       if (_confirmPasswordTextEditingController.text.trim().isNotEmpty &&
+//           _passwordTextEditingController.text.trim() !=
+//               _confirmPasswordTextEditingController.text.trim()) {
+//         // Show error message if passwords do not match
+//         ScaffoldMessenger.of(context).showSnackBar(
+//           SnackBar(
+//             content: Text('Passwords do not match.'),
+//             duration: Duration(seconds: 2),
+//           ),
+//         );
+//       }
+//     }
+
+//     }
+
+// // Check if a photo is selected
+//     if (photo != null) {
+//       List<int> imageBytes = await photo!.readAsBytes();
+//       photoImage = base64Encode(imageBytes);
+//       inputData['photo'] = photoImage;
+//     }
+
+//   }
+
+//  response = await http.post(
+//         Uri.parse("http://testflutter.felixeladi.co.ke/TaskManager/signup.php"),
+//         body: inputData);
+
+//  if (mounted) {
+//       if (response.statusCode == 200) {
+//         print('Error :  ${response.statusCode}');
+//         var serverResponse = json.decode(response.body);
+//         int signup = serverResponse['success'];
+//         if (signup == 1) {
+//           ScaffoldMessenger.of(context).showSnackBar(
+//             SnackBar(
+//               content: Title(
+//                   color: const Color.fromARGB(255, 78, 80, 79),
+//                   child: Text(
+//                     'Account created Sucessfully',
+//                     style: TextStyle(
+//                       fontSize: 20,
+//                       fontWeight: FontWeight.w900,
+//                       color: Colors.greenAccent,
+//                     ),
+//                   )),
+//             ),
+//           );
+
+//           Get.offAndToNamed('/');
+//         } else {
+//           print('Error :  ${response.statusCode}');
+//           ScaffoldMessenger.of(context).showSnackBar(
+//             SnackBar(
+//               content: Title(
+//                   color: const Color.fromARGB(255, 78, 80, 79),
+//                   child: Text(
+//                     'Account creation failed! Please try again.',
+//                     style: TextStyle(
+//                       fontSize: 20,
+//                       fontWeight: FontWeight.w900,
+//                       color: Colors.red,
+//                     ),
+//                   )),
+//             ),
+//           );
+//         }
+//       } else {
+//         print('Error :  ${response.statusCode}');
+//         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+//           content: Title(
+//               color: Color.fromARGB(255, 217, 5, 40),
+//               child: Text(
+//                 'Server Error ${response.statusCode}',
+//                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
+//               )),
+//         ));
+//       }
+//  }
+
+//     // Check if the password field is not empty
+//     // if (_passwordTextEditingController.text.isNotEmpty) {
+//     //   inputData['password'] = _passwordTextEditingController.text.trim();
+//     // }
+
+//     // if (response.statusCode == 200) {
+//     //   var serverResponse = json.decode(response.body);
+//     //   int signup = serverResponse['success'];
+//     //   if (signup == 1) {
+//     //     ScaffoldMessenger.of(context).showSnackBar(
+//     //       SnackBar(
+//     //         content: Title(
+//     //             color: const Color.fromARGB(255, 78, 80, 79),
+//     //             child: Text(
+//     //               'Account created Sucessfully',
+//     //               style: TextStyle(
+//     //                 fontSize: 20,
+//     //                 fontWeight: FontWeight.w900,
+//     //                 color: Colors.greenAccent,
+//     //               ),
+//     //             )),
+//     //       ),
+//     //     );
+//     //     _clearTextFields();
+//     //     Get.offAndToNamed('/');
+//     //   } else {
+//     //     ScaffoldMessenger.of(context).showSnackBar(
+//     //       SnackBar(
+//     //         content: Title(
+//     //             color: const Color.fromARGB(255, 78, 80, 79),
+//     //             child: Text(
+//     //               'Account creation failed! Please try again.',
+//     //               style: TextStyle(
+//     //                 fontSize: 20,
+//     //                 fontWeight: FontWeight.w900,
+//     //                 color: Colors.red,
+//     //               ),
+//     //             )),
+//     //       ),
+//     //     );
+//     //   }
+//     // } else {
+//     //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+//     //     content: Title(
+//     //         color: Color.fromARGB(255, 217, 5, 40),
+//     //         child: Text(
+//     //           'Server Error ${response.statusCode}',
+//     //           style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
+//     //         )),
+//     //   ));
+
+//   void _clearTextFields() {
+//     _usernameTextEditingController.clear();
+//     _emailTextEditingController.clear();
+//     _mobileTextEditingController.clear();
+//     _passwordTextEditingController.clear();
+//   }
+
   Future<void> _signUp() async {
-    http.Response response;
-    // var body = {
-    //   'username': _usernameTextEditingController.text.trim(),
-    //   'emailAddress': _emailTextEditingController.text.trim(),
-    //   'mobileNumber': _mobileTextEditingController.text.trim(),
-    //   'password': _passwordTextEditingController.text.trim(),
-    // };
+    if (_formKey.currentState!.validate()) {
+      // Form is valid, continue with signup process
+      http.Response response;
 
-    String? photoImage;
-    Map<String, dynamic> inputData = {
-      'username': _usernameTextEditingController.text.trim(),
-      'emailAddress': _emailTextEditingController.text.trim(),
-      'mobileNumber': _mobileTextEditingController.text.trim(),
-      'password': _passwordTextEditingController.text.trim(),
-    };
+      // Prepare the request body
+      Map<String, dynamic> inputData = {
+        'username': _usernameTextEditingController.text.trim(),
+        'emailAddress': _emailTextEditingController.text.trim(),
+        'mobileNumber': _mobileTextEditingController.text.trim(),
+        'password': _passwordTextEditingController.text.trim(),
+      };
 
-    // Check if the password field is not empty
-    // if (_passwordTextEditingController.text.isNotEmpty) {
-    //   inputData['password'] = _passwordTextEditingController.text.trim();
-    // }
+      // Check if a photo is selected
+      String? photoImage;
+      if (photo != null) {
+        List<int> imageBytes = await photo!.readAsBytes();
+        photoImage = base64Encode(imageBytes);
+        inputData['photo'] = photoImage;
+      }
 
-    // Check if a photo is selected
-    if (photo != null) {
-      List<int> imageBytes = await photo!.readAsBytes();
-      photoImage = base64Encode(imageBytes);
-      inputData['photo'] = photoImage;
-    }
+      try {
+        // Send POST request to the server
+        response = await http.post(
+          Uri.parse(
+              "http://testflutter.felixeladi.co.ke/TaskManager/signup.php"),
+          body: inputData,
+        );
 
-    response = await http.post(
-        Uri.parse("http://testflutter.felixeladi.co.ke/TaskManager/signup.php"),
-        body: inputData);
-
-    // if (response.statusCode == 200) {
-    //   var serverResponse = json.decode(response.body);
-    //   int signup = serverResponse['success'];
-    //   if (signup == 1) {
-    //     ScaffoldMessenger.of(context).showSnackBar(
-    //       SnackBar(
-    //         content: Title(
-    //             color: const Color.fromARGB(255, 78, 80, 79),
-    //             child: Text(
-    //               'Account created Sucessfully',
-    //               style: TextStyle(
-    //                 fontSize: 20,
-    //                 fontWeight: FontWeight.w900,
-    //                 color: Colors.greenAccent,
-    //               ),
-    //             )),
-    //       ),
-    //     );
-    //     _clearTextFields();
-    //     Get.offAndToNamed('/');
-    //   } else {
-    //     ScaffoldMessenger.of(context).showSnackBar(
-    //       SnackBar(
-    //         content: Title(
-    //             color: const Color.fromARGB(255, 78, 80, 79),
-    //             child: Text(
-    //               'Account creation failed! Please try again.',
-    //               style: TextStyle(
-    //                 fontSize: 20,
-    //                 fontWeight: FontWeight.w900,
-    //                 color: Colors.red,
-    //               ),
-    //             )),
-    //       ),
-    //     );
-    //   }
-    // } else {
-    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    //     content: Title(
-    //         color: Color.fromARGB(255, 217, 5, 40),
-    //         child: Text(
-    //           'Server Error ${response.statusCode}',
-    //           style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
-    //         )),
-    //   ));
-    if (mounted) {
-      if (response.statusCode == 200) {
-        print('Error :  ${response.statusCode}');
-        var serverResponse = json.decode(response.body);
-        int signup = serverResponse['success'];
-        if (signup == 1) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Title(
-                  color: const Color.fromARGB(255, 78, 80, 79),
-                  child: Text(
-                    'Account created Sucessfully',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w900,
-                      color: Colors.greenAccent,
-                    ),
-                  )),
-            ),
-          );
-          _clearTextFields();
-          Get.offAndToNamed('/');
-        } else {
-          print('Error :  ${response.statusCode}');
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Title(
-                  color: const Color.fromARGB(255, 78, 80, 79),
-                  child: Text(
+        if (mounted) {
+          if (response.statusCode == 200) {
+            var serverResponse = json.decode(response.body);
+            int signup = serverResponse['success'];
+            if (signup == 1) {
+              // Success: Account created successfully
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    'Account created successfully',
+                    style: TextStyle(color: Colors.green),
+                  ),
+                ),
+              );
+              // Clear text fields and navigate to home screen
+              _clearTextFields();
+              Get.offAll(LoginScreen());
+            } else {
+              // Failure: Account creation failed
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
                     'Account creation failed! Please try again.',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w900,
-                      color: Colors.red,
-                    ),
-                  )),
-            ),
-          );
+                    style: TextStyle(color: Colors.red),
+                  ),
+                ),
+              );
+            }
+          } else {
+            // Server error: Non-200 status code
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  'Server Error ${response.statusCode}',
+                  style: TextStyle(color: Colors.red),
+                ),
+              ),
+            );
+          }
         }
-      } else {
-        print('Error :  ${response.statusCode}');
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Title(
-              color: Color.fromARGB(255, 217, 5, 40),
-              child: Text(
-                'Server Error ${response.statusCode}',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
-              )),
-        ));
+      } catch (error) {
+        // Network error or other exceptions
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Error: $error',
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
+        );
       }
     }
   }
@@ -369,5 +525,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     _emailTextEditingController.clear();
     _mobileTextEditingController.clear();
     _passwordTextEditingController.clear();
+    _confirmPasswordTextEditingController.clear();
   }
 }
